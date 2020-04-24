@@ -1,0 +1,376 @@
+﻿@model AlMajd.Models.TravellerInformations
+@{
+    ViewBag.Title = "TravellersIndex";
+}
+
+<div class="container" style="margin-top:2%;">
+
+    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Open Modal</a>
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Technotips MVC</h3>
+
+                </div>
+                <div class="modal-body">
+
+                    <form id="myForm" method="post">
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.travellerIdentify, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.travellerIdentify, new { htmlAttributes = new { @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.travellerIdentify, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.fName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.fName, new { htmlAttributes = new { @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.fName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.lName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.lName, new { htmlAttributes = new { @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.lName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.numberOfTravellers, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.numberOfTravellers, new { htmlAttributes = new {@id="nbreOfTrav",@type="number" ,@class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.numberOfTravellers, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.numberDarebeh, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.numberDarebeh, new { htmlAttributes = new {@id="nbreOfDrib",@type="number", @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.numberDarebeh, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            @if (ViewBag.ServiseList != null)
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.serviceId, "serviceId", htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(model => model.serviceId, ViewBag.ServiseList as SelectList, "--select--", htmlAttributes: new {@id="servType", @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.serviceId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            }
+
+                            <hr />
+                            <h3 style="text-align:center">قيمة العملات مقابل الدولار</h3>
+                            <div class="col-md-12 text-center">
+
+                                <div class="col-md-4 text-center">
+                                    <label>NIS: @TempData["nisCurVal"]</label>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <label>JD: @TempData["jdCurVal"]</label>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <label>EURO: @TempData["euroCurVal"]</label>
+                                </div>
+                            </div>
+
+                            <input type="number" value="@TempData["nisCurVal"]" hidden id="nisValue"/>
+                            <input type="number" value="@TempData["jdCurVal"]" hidden id="jdValue"/>
+                            <input type="number" value="@TempData["euroCurVal"]" hidden id="euroValue"/>
+                            <hr />
+                            <div class="form-group">
+                                @Html.Label("إختر الية الدفع", htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    <select class="form-control" id="payement" required>
+                                        <option value="-1">-- إختر العملات --</option>
+                                        <option value="0"> nis</option>
+                                        <option value="1">dollar</option>
+                                        <option value="2">jd</option>
+                                        <option value="3">euro</option>
+                                        <option value="4">nis + dollar</option>
+                                        <option value="5">nis + jd</option>
+                                        <option value="6">nis + euro</option>
+                                        <option value="7">dollar + jd</option>
+                                        <option value="8">dollar + euro</option>
+                                        <option value="9">jd + euro</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="dollarPaymentDiv" hidden>
+                                @Html.LabelFor(model => model.dollarPay, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.dollarPay, new { htmlAttributes = new {@id="dollarPayment", @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.dollarPay, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="jdPaymentDiv" hidden>
+                                @Html.LabelFor(model => model.jdPay, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.jdPay, new { htmlAttributes = new {@id="jdPayment", @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.jdPay, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="euroPaymentDiv" hidden>
+                                @Html.LabelFor(model => model.eurpPay, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.eurpPay, new { htmlAttributes = new {id="euroPayment", @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.eurpPay, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="nisPaymentDiv" hidden>
+                                @Html.LabelFor(model => model.nisPay, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.nisPay, new { htmlAttributes = new {@id="nisPayment", @class = "form-control", @placeholder = "type..." } })
+                                    @Html.ValidationMessageFor(model => model.nisPay, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            @*<div class="form-group">
+            @Html.LabelFor(model => model.dateOfTravel, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.dateOfTravel, new { htmlAttributes = new { @type = "date", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dateOfTravel, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+                            @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>*@
+                        </div>
+
+                        @*@Html.DropDownListFor(model => model.DepartmentId, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
+
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name" })
+
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address" })
+
+                            @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control", @placeholder = "SiteName" })*@
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <button type="submit" value="Submit" class="btn btn-success" id="btnSubmit">Submit</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-responsive table-striped">
+    <thead>
+        <tr>
+            <th> Travel identify</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Service Type</th>
+            <th>number of travellers</th>
+            <th>number of darebeh</th>
+            <th>date of travel</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.listTravllers != null)
+        {
+            foreach (var x in ViewBag.listTravllers)
+            {
+                <tr>
+                    <td>@x.travellerIdentify</td>
+                    <td>@x.fName</td>
+                    <td>@x.lName</td>
+                    @if (x.serviceId != null)
+                    {
+                        <td>@x.ServiceType.serviceName</td>
+                    }
+                    else
+                    {
+                        <td>Null</td>
+                    }
+                    <td>@x.numberOfTravellers</td>
+                    <td>@x.numberDarebeh</td>
+                    <td>@x.dateOfTravel</td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+
+
+
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            var myformdata = $("#myForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Traveller/CreateNewTravel",
+                data: myformdata,
+                success: function (response) {
+                    if (response) {
+                        $("#myModal").modal("hide");
+                        window.location.href = "/Home/TravellersIndex";
+                    }
+                }
+            })
+        })
+    });
+
+    $('#payement').change( function () {
+            var selectedPayment = $(this).children("option:selected").val();
+            if (selectedPayment >= 0) {
+                if (selectedPayment == 0) {
+                    $('#nisPaymentDiv').show();
+                    $('#dollarPaymentDiv').hide();
+                    $('#jdPaymentDiv').hide();
+                    $('#euroPaymentDiv').hide();
+                }
+                else if (selectedPayment == 1) {
+                    $('#dollarPaymentDiv').show();
+                    $('#nisPaymentDiv').hide();
+                    $('#jdPaymentDiv').hide();
+                    $('#euroPaymentDiv').hide();
+                }
+                else if (selectedPayment == 2) {
+                    $('#jdPaymentDiv').show();
+                    $('#dollarPaymentDiv').hide();
+                    $('#nisPaymentDiv').hide();
+                    $('#euroPaymentDiv').hide();
+                }
+                else if (selectedPayment == 3) {
+                    $('#euroPaymentDiv').show();
+                    $('#dollarPaymentDiv').hide();
+                    $('#jdPaymentDiv').hide();
+                    $('#nisPaymentDiv').hide();
+                }
+                else if (selectedPayment == 4) {
+                    $('#nisPaymentDiv').show();
+                    $('#euroPaymentDiv').hide();
+                    $('#dollarPaymentDiv').show();
+                    $('#jdPaymentDiv').hide();
+
+                }
+                else if (selectedPayment == 5) {
+                    $('#nisPaymentDiv').show();
+                    $('#euroPaymentDiv').hide();
+                    $('#dollarPaymentDiv').hide();
+                    $('#jdPaymentDiv').show();
+
+                }
+                else if (selectedPayment == 6) {
+                    $('#nisPaymentDiv').show();
+                    $('#euroPaymentDiv').show();
+                    $('#dollarPaymentDiv').hide();
+                    $('#jdPaymentDiv').hide();
+
+                }
+                else if (selectedPayment == 7) {
+                    $('#nisPaymentDiv').hide();
+                    $('#euroPaymentDiv').hide();
+                    $('#dollarPaymentDiv').show();
+                    $('#jdPaymentDiv').show();
+
+                }
+                else if (selectedPayment == 8) {
+                    $('#nisPaymentDiv').hide();
+                    $('#euroPaymentDiv').show();
+                    $('#dollarPaymentDiv').show();
+                    $('#jdPaymentDiv').hide();
+                }
+                else if (selectedPayment == 9) {
+                    $('#nisPaymentDiv').hide();
+                    $('#euroPaymentDiv').show();
+                    $('#dollarPaymentDiv').hide();
+                    $('#jdPaymentDiv').show();
+                }
+            }
+            else {
+                $('#dollarPaymentDiv').hide();
+                $('#nisPaymentDiv').hide();
+                $('#euroPaymentDiv').hide();
+                $('#jdPaymentDiv').hide();
+            }
+    });
+
+    $('#payement').change(function () {
+        var paymentChoise = $('#payement').children("option:selected").val();
+        var servType=$('#servType').children("option:selected").val();
+        if (paymentChoise == 0) {
+            if (servType == 1) {
+                var price = ($('#nbreOfTrav').val()*(((150 * $('#nisValue').val()) / 100)))+(150*$('#nbreOfDrib').val());
+                $("#nisPayment").val(price);
+            }
+            else if (servType == 2){
+                var price = ($('#nbreOfTrav').val()*(((110 * $('#nisValue').val()) / 100)))+(150*$('#nbreOfDrib').val());
+                $("#nisPayment").val(price);
+            } else if (servType==3){
+                var price = ($('#nbreOfTrav').val()*(((80 * $('#nisValue').val()) / 100)))+(150*$('#nbreOfDrib').val());
+                $("#nisPayment").val(price);
+            }
+        }
+        else if (paymentChoise == 1) {
+
+            if (servType == 1) {
+                var price = ($('#nbreOfTrav').val()*150)+(42.8*$('#nbreOfDrib').val());
+                $("#dollarPayment").val(price);
+            }
+            else if (servType == 2){
+                var price = ($('#nbreOfTrav').val()*110)+(42.8*$('#nbreOfDrib').val());
+                $("#dollarPayment").val(price);
+            } else if (servType==3){
+                var price = ($('#nbreOfTrav').val()*80)+(42.8*$('#nbreOfDrib').val());
+                $("#dollarPayment").val(price);
+            }
+
+        }
+         else if (paymentChoise == 2) {
+            if (servType == 1) {
+                var price = ($('#nbreOfTrav').val()*(150 * $('#jdValue').val() / 100))+(30*$('#nbreOfDrib').val());
+                $("#jdPayment").val(price);
+            }
+            else if (servType == 2){
+                var price = ($('#nbreOfTrav').val()*(((110 * $('#jdValue').val()) / 100)))+(30*$('#nbreOfDrib').val());
+                $("#jdPayment").val(price);
+            } else if (servType==3){
+                var price = ($('#nbreOfTrav').val()*(((80 * $('#jdValue').val()) / 100)))+(30*$('#nbreOfDrib').val());
+                $("#jdPayment").val(price);
+            }
+        }
+        else if (paymentChoise == 3) {
+            if (servType == 1) {
+                var price = ($('#nbreOfTrav').val()*(150 * $('#euroValue').val() / 100))+(38.5*$('#nbreOfDrib').val());
+                $("#euroPayment").val(price);
+            }
+            else if (servType == 2){
+                var price = ($('#nbreOfTrav').val()*(((110 * $('#euroValue').val()) / 100)))+(38.5*$('#nbreOfDrib').val());
+                $("#euroPayment").val(price);
+            } else if (servType==3){
+                var price = ($('#nbreOfTrav').val()*(((80 * $('#euroValue').val()) / 100)))+(38.5*$('#nbreOfDrib').val());
+                $("#euroPayment").val(price);
+            }
+        }
+    });
+
+</script>

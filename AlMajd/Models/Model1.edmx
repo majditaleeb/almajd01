@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AlMajdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CurrencyValues">
+          <Key>
+            <PropertyRef Name="CurrencyValueId" />
+          </Key>
+          <Property Name="CurrencyValueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dollarVlaue" Type="money" />
+          <Property Name="JDValue" Type="money" />
+          <Property Name="euroValue" Type="money" />
+          <Property Name="NISValue" Type="money" />
+        </EntityType>
+        <EntityType Name="ServiceType">
+          <Key>
+            <PropertyRef Name="serviceId" />
+          </Key>
+          <Property Name="serviceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="serviceName" Type="nvarchar" MaxLength="50" />
+          <Property Name="serviceValue" Type="money" />
+        </EntityType>
+        <EntityType Name="TotaleMoney">
+          <Key>
+            <PropertyRef Name="totaleId" />
+          </Key>
+          <Property Name="totaleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="totaleDollar" Type="money" />
+          <Property Name="totaleJD" Type="money" />
+          <Property Name="totaleEuro" Type="money" />
+          <Property Name="totaleNIS" Type="money" />
+          <Property Name="dateOfTotale" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TravellerInformations">
+          <Key>
+            <PropertyRef Name="travellerId" />
+          </Key>
+          <Property Name="travellerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="travellerIdentify" Type="int" />
+          <Property Name="fName" Type="nvarchar" MaxLength="50" />
+          <Property Name="lName" Type="nvarchar" MaxLength="50" />
+          <Property Name="numberOfTravellers" Type="int" />
+          <Property Name="numberDarebeh" Type="int" />
+          <Property Name="serviceId" Type="int" />
+          <Property Name="dateOfTravel" Type="datetime" />
+          <Property Name="dollarPay" Type="money" />
+          <Property Name="jdPay" Type="money" />
+          <Property Name="eurpPay" Type="money" />
+          <Property Name="nisPay" Type="money" />
+        </EntityType>
+        <Association Name="FK_TravellerInformations_ServiceType">
+          <End Role="ServiceType" Type="Self.ServiceType" Multiplicity="0..1" />
+          <End Role="TravellerInformations" Type="Self.TravellerInformations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceType">
+              <PropertyRef Name="serviceId" />
+            </Principal>
+            <Dependent Role="TravellerInformations">
+              <PropertyRef Name="serviceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlMajdModelStoreContainer">
+          <EntitySet Name="CurrencyValues" EntityType="Self.CurrencyValues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceType" EntityType="Self.ServiceType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TotaleMoney" EntityType="Self.TotaleMoney" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TravellerInformations" EntityType="Self.TravellerInformations" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TravellerInformations_ServiceType" Association="Self.FK_TravellerInformations_ServiceType">
+            <End Role="ServiceType" EntitySet="ServiceType" />
+            <End Role="TravellerInformations" EntitySet="TravellerInformations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AlMajdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CurrencyValues">
+          <Key>
+            <PropertyRef Name="CurrencyValueId" />
+          </Key>
+          <Property Name="CurrencyValueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dollarVlaue" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="JDValue" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="euroValue" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NISValue" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="ServiceType">
+          <Key>
+            <PropertyRef Name="serviceId" />
+          </Key>
+          <Property Name="serviceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="serviceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="serviceValue" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="TravellerInformations" Relationship="Self.FK_TravellerInformations_ServiceType" FromRole="ServiceType" ToRole="TravellerInformations" />
+        </EntityType>
+        <EntityType Name="TotaleMoney">
+          <Key>
+            <PropertyRef Name="totaleId" />
+          </Key>
+          <Property Name="totaleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="totaleDollar" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="totaleJD" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="totaleEuro" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="totaleNIS" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="dateOfTotale" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TravellerInformations">
+          <Key>
+            <PropertyRef Name="travellerId" />
+          </Key>
+          <Property Name="travellerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="travellerIdentify" Type="Int32" />
+          <Property Name="fName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="numberOfTravellers" Type="Int32" />
+          <Property Name="numberDarebeh" Type="Int32" />
+          <Property Name="serviceId" Type="Int32" />
+          <Property Name="dateOfTravel" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ServiceType" Relationship="Self.FK_TravellerInformations_ServiceType" FromRole="TravellerInformations" ToRole="ServiceType" />
+          <Property Name="dollarPay" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="jdPay" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="eurpPay" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="nisPay" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <Association Name="FK_TravellerInformations_ServiceType">
+          <End Role="ServiceType" Type="Self.ServiceType" Multiplicity="0..1" />
+          <End Role="TravellerInformations" Type="Self.TravellerInformations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceType">
+              <PropertyRef Name="serviceId" />
+            </Principal>
+            <Dependent Role="TravellerInformations">
+              <PropertyRef Name="serviceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AlMajdEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CurrencyValues" EntityType="Self.CurrencyValues" />
+          <EntitySet Name="ServiceType" EntityType="Self.ServiceType" />
+          <EntitySet Name="TotaleMoney" EntityType="Self.TotaleMoney" />
+          <EntitySet Name="TravellerInformations" EntityType="Self.TravellerInformations" />
+          <AssociationSet Name="FK_TravellerInformations_ServiceType" Association="Self.FK_TravellerInformations_ServiceType">
+            <End Role="ServiceType" EntitySet="ServiceType" />
+            <End Role="TravellerInformations" EntitySet="TravellerInformations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AlMajdModelStoreContainer" CdmEntityContainer="AlMajdEntities">
+          <EntitySetMapping Name="CurrencyValues">
+            <EntityTypeMapping TypeName="AlMajdModel.CurrencyValues">
+              <MappingFragment StoreEntitySet="CurrencyValues">
+                <ScalarProperty Name="CurrencyValueId" ColumnName="CurrencyValueId" />
+                <ScalarProperty Name="dollarVlaue" ColumnName="dollarVlaue" />
+                <ScalarProperty Name="JDValue" ColumnName="JDValue" />
+                <ScalarProperty Name="euroValue" ColumnName="euroValue" />
+                <ScalarProperty Name="NISValue" ColumnName="NISValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceType">
+            <EntityTypeMapping TypeName="AlMajdModel.ServiceType">
+              <MappingFragment StoreEntitySet="ServiceType">
+                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
+                <ScalarProperty Name="serviceName" ColumnName="serviceName" />
+                <ScalarProperty Name="serviceValue" ColumnName="serviceValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TotaleMoney">
+            <EntityTypeMapping TypeName="AlMajdModel.TotaleMoney">
+              <MappingFragment StoreEntitySet="TotaleMoney">
+                <ScalarProperty Name="totaleId" ColumnName="totaleId" />
+                <ScalarProperty Name="totaleDollar" ColumnName="totaleDollar" />
+                <ScalarProperty Name="totaleJD" ColumnName="totaleJD" />
+                <ScalarProperty Name="totaleEuro" ColumnName="totaleEuro" />
+                <ScalarProperty Name="totaleNIS" ColumnName="totaleNIS" />
+                <ScalarProperty Name="dateOfTotale" ColumnName="dateOfTotale" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TravellerInformations">
+            <EntityTypeMapping TypeName="AlMajdModel.TravellerInformations">
+              <MappingFragment StoreEntitySet="TravellerInformations">
+                <ScalarProperty Name="nisPay" ColumnName="nisPay" />
+                <ScalarProperty Name="eurpPay" ColumnName="eurpPay" />
+                <ScalarProperty Name="jdPay" ColumnName="jdPay" />
+                <ScalarProperty Name="dollarPay" ColumnName="dollarPay" />
+                <ScalarProperty Name="travellerId" ColumnName="travellerId" />
+                <ScalarProperty Name="travellerIdentify" ColumnName="travellerIdentify" />
+                <ScalarProperty Name="fName" ColumnName="fName" />
+                <ScalarProperty Name="lName" ColumnName="lName" />
+                <ScalarProperty Name="numberOfTravellers" ColumnName="numberOfTravellers" />
+                <ScalarProperty Name="numberDarebeh" ColumnName="numberDarebeh" />
+                <ScalarProperty Name="serviceId" ColumnName="serviceId" />
+                <ScalarProperty Name="dateOfTravel" ColumnName="dateOfTravel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
